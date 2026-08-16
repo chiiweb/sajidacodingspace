@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="sajida's professional interactive coding classroom">
+  <meta name="theme-color" content="#0b0a12">
+  <title>sajida's coding space — extravaganza</title>
+  <link rel="icon" href="assets/chiikawastar.png">
+  <link rel="stylesheet" href="style.css">
+  <style>@keyframes popParticle{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0}}.copy-btn{position:absolute !important;top:10px !important;right:10px !important;background:#9cddff;color:#080810;border:none;padding:4px 8px;border-radius:4px;font-size:10px;cursor:pointer;font-weight:600;z-index:100;transition:.2s}.copy-btn:hover{background:#7fc8ff}.copy-btn.copied{background:#87e0a5}</style>
+  <audio id="loadSound" preload="auto"><source src="assets/soundeffect.mp3" type="audio/mpeg"></audio>
+</head>
+<body>
+  <div class="loader" id="loader">
+    <div class="lock-screen" id="lockScreen">
+      <div class="lock-top">
+        <div class="lock-time" id="lockTime">10:24</div>
+        <div class="lock-date" id="lockDate">Sunday, August 16</div>
+      </div>
+      <img class="lock-deco" src="assets/chiisai.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
+      <div class="lock-hint"><span>click anywhere or press any key</span></div>
+    </div>
+    <div class="signin-screen" id="signinScreen">
+      <div class="signin-avatar"><img src="assets/chiikawastar.png" alt="sajida" onerror="this.style.display='none'"></div>
+      <div class="signin-name">sajida</div>
+      <div class="spinner-ring" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <p id="loader-message">booting the classroom...</p>
+    </div>
+  </div>
+
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <header class="topbar">
+    <a href="#home" class="brand" aria-label="home">
+      <span class="brand-mark">&lt;/&gt;</span>
+      <span><b>sajida</b><small>coding space</small></span>
+    </a>
+    <nav aria-label="primary navigation">
+      <a href="#home">home</a>
+      <a href="#classroom">classroom</a>
+      <a href="#terminal">terminal</a>
+      <a href="#resources">resources</a>
+      <a href="#challenge">challenge</a>
+      <a href="#projects">projects</a>
+      <a href="#extras">extras</a>
+    </nav>
+    <div class="top-tools">
+      <span id="clock">--:--:--</span>
+      <button id="searchButton" class="icon-button" aria-label="search">⌕</button>
+      <button id="toolsButton" class="icon-button" aria-label="toolkit">✦</button>
+      <button id="themeButton" class="icon-button" aria-label="change theme">☼</button>
+    </div>
+  </header>
+
+  <div class="theme-popover" id="themePopover" aria-hidden="true">
+    <span class="pop-title">choose a theme</span>
+    <button class="theme-swatch" data-theme="midnight"><span class="dots"><i style="color:#0b0a12;background:#0b0a12;box-shadow:0 0 8px #0b0a12,inset 0 0 0 1px #ffffff33"></i><i style="color:#c8bdff;background:#c8bdff"></i></span><span class="name">midnight</span><span class="check">✓</span></button>
+    <button class="theme-swatch" data-theme="daylight"><span class="dots"><i style="color:#faf8fc;background:#faf8fc;box-shadow:0 0 8px #faf8fc,inset 0 0 0 1px #00000022"></i><i style="color:#7967ff;background:#7967ff"></i></span><span class="name">daylight</span><span class="check">✓</span></button>
+    <button class="theme-swatch" data-theme="ocean"><span class="dots"><i style="color:#071b24;background:#071b24"></i><i style="color:#5be6d9;background:#5be6d9"></i></span><span class="name">ocean breeze</span><span class="check">✓</span></button>
+    <button class="theme-swatch" data-theme="sunset"><span class="dots"><i style="color:#20101c;background:#20101c"></i><i style="color:#ff8a5c;background:#ff8a5c"></i></span><span class="name">sunset glow</span><span class="check">✓</span></button>
+    <button class="theme-swatch" data-theme="forest"><span class="dots"><i style="color:#0c1f14;background:#0c1f14"></i><i style="color:#4fd984;background:#4fd984"></i></span><span class="name">enchanted forest</span><span class="check">✓</span></button>
+    <button class="theme-swatch" data-theme="galaxy"><span class="dots"><i style="color:#0a0620;background:#0a0620"></i><i style="color:#e879f9;background:#e879f9"></i></span><span class="name">magic galaxy</span><span class="check">✓</span></button>
+  </div>
+
+  <div class="tools-popover" id="toolsPopover" aria-hidden="true">
+    <div class="tools-block">
+      <h4>⏱ focus timer</h4>
+      <div class="timer-display" id="timerDisplay">25:00</div>
+      <div class="timer-row">
+        <button id="timerStart" class="primary-timer">start</button>
+        <button id="timerReset">reset</button>
+      </div>
+      <div class="timer-presets">
+        <button data-mins="15">15m</button>
+        <button data-mins="25">25m</button>
+        <button data-mins="45">45m</button>
+      </div>
+    </div>
+    <div class="tools-block">
+      <h4>🏆 achievements <small id="badgeCount" style="color:#7f7a8d;font-weight:400;margin-left:4px"></small></h4>
+      <div class="badge-grid" id="badgeGrid"></div>
+    </div>
+    <div class="tools-block">
+      <h4>✨ magic mode</h4>
+      <div class="magic-toggle-row">
+        <span>cursor sparkle trail</span>
+        <div class="switch" id="magicSwitch"></div>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <section class="fairy-strip" id="home">
+      <img src="assets/fairylights.png" alt="fairy lights decoration">
+      <div class="fairy-caption">welcome to sajida's classroom <span>•</span> build something brilliant</div>
+    </section>
+
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow"><i></i> LIVE LEARNING ENVIRONMENT</div>
+        <h1>build ideas.<br><span>make them real.</span></h1>
+        <p>a polished coding space for lessons, experiments, websites, games, and creative projects — now with working navigation, lessons, tools, and a real node.js backend.</p>
+        <div class="hero-buttons">
+          <a href="#terminal" class="button primary">open live terminal →</a>
+          <a href="#resources" class="button secondary">explore resources</a>
+          <button class="button ghost" id="randomIdeaButton">surprise me ✦</button>
+        </div>
+        <div class="stats">
+          <div><strong id="topicCount">04</strong><span>core topics</span></div>
+          <div><strong id="projectCount">06</strong><span>starter ideas</span></div>
+          <div><strong id="sessionCount">01</strong><span>live server</span></div>
+        </div>
+      </div>
+      <div class="code-card tilt">
+        <div class="code-header"><span>classroom.js</span><span class="server-pill"><i></i><span id="serverText">checking server...</span></span></div>
+        <div class="code-body">
+          <p><em>01</em><span><b>const</b> teacher = <mark>"sajida"</mark>;</span></p>
+          <p><em>02</em><span><b>const</b> subject = <mark>"coding"</mark>;</span></p>
+          <p><em>03</em><span>&nbsp;</span></p>
+          <p><em>04</em><span><b>function</b> <strong>learn</strong>() {</span></p>
+          <p><em>05</em><span>&nbsp;&nbsp;<b>return</b> <mark>"keep creating ✦"</mark>;</span></p>
+          <p><em>06</em><span>}</span></p>
+          <p><em>07</em><span><strong>build</strong>(ideas);</span></p>
+        </div>
+        <div class="code-footer"><span>localhost:3000</span><span>node.js</span></div>
+      </div>
+    </section>
+
+    <section class="section" id="classroom">
+      <div class="section-heading"><span>01 / classroom</span><h2>a place for every part of coding.</h2><p>use the cards as shortcuts into the interactive classroom.</p></div>
+      <div class="feature-grid">
+        <article class="feature tilt"><span class="number">01</span><div class="icon">⌘</div><h3>node.js lab</h3><p>test backend commands, check server health, and learn how a browser talks to a backend.</p><a href="#terminal">open lab ↗</a></article>
+        <article class="feature tilt"><span class="number">02</span><div class="icon">◇</div><h3>frontend studio</h3><p>jump straight into html, css, javascript, layout, animation, and responsive design lessons.</p><a href="#resources">view topics ↗</a></article>
+        <article class="feature tilt"><span class="number">03</span><div class="icon">✦</div><h3>project desk</h3><p>keep a collection of ideas and use the built-in starter buttons to turn one into a real project.</p><a href="#projects">open desk ↗</a></article>
+        <article class="feature tilt"><span class="number">04</span><div class="icon">⌁</div><h3>focus mode</h3><p>hide distractions with a clean reading mode and keep the classroom feeling like a real learning dashboard.</p><button class="text-button" id="focusButton">enter focus mode ↗</button></article>
+      </div>
+    </section>
+
+    <section class="section" id="terminal">
+      <div class="section-heading"><span>02 / live terminal</span><h2>the server, right inside the website.</h2><p>commands typed here are sent to the node.js backend.</p></div>
+      <div class="terminal tilt">
+        <div class="terminal-head"><div class="traffic"><i></i><i></i><i></i></div><span>terminal — sajida@localhost</span><span class="online"><i></i> <span id="terminalStatus">online</span></span></div>
+        <div class="terminal-output" id="terminalOutput"><div>✦ welcome to sajida's node.js terminal</div><div class="dim">type <b>help</b> for commands or click a quick command below.</div></div>
+        <form id="terminalForm" class="terminal-form"><span class="prompt">sajida@localhost:~$</span><input id="terminalInput" autocomplete="off" spellcheck="false" placeholder="type a command..." aria-label="terminal command"></form>
+      </div>
+      <div class="terminal-quick"><span>try:</span><button data-command="help">help</button><button data-command="status">status</button><button data-command="resources">resources</button><button data-command="joke">joke</button><button data-command="projects">projects</button><button data-command="clear">clear</button></div>
+      <div class="shortcut">tip: press <kbd>ctrl</kbd> + <kbd>k</kbd> to jump to the terminal • press <kbd>/</kbd> to search the classroom</div>
+    </section>
+
+    <section class="section" id="resources">
+      <div class="section-heading"><span>03 / resources</span><h2>choose something to learn.</h2><p>every card has a real lesson link and an interactive classroom shortcut.</p></div>
+      <div class="resource-toolbar"><label class="search-wrap"><span>⌕</span><input id="resourceSearch" placeholder="search lessons..." aria-label="search lessons"></label><button class="filter active" data-filter="all">all</button><button class="filter" data-filter="frontend">frontend</button><button class="filter" data-filter="backend">backend</button></div>
+      <div class="resource-grid" id="resourceGrid"></div>
+    </section>
+
+    <section class="section" id="challenge">
+      <div class="section-heading"><span>04 / daily challenge</span><h2>one small challenge a day.</h2><p>a tiny prompt to practice on — build it in the code editor below.</p></div>
+      <div class="challenge-card">
+        <div class="challenge-icon" id="challengeIcon">🎯</div>
+        <div class="challenge-body">
+          <span class="tag" id="challengeTag">javascript</span>
+          <h3 id="challengeTitle">loading a challenge...</h3>
+          <p id="challengeDesc">hang tight while we pick something fun to build.</p>
+          <span class="challenge-diff diff-easy" id="challengeDiff">easy</span>
+        </div>
+        <button id="newChallengeBtn">🎲 new challenge</button>
+      </div>
+    </section>
+
+    <section class="section" id="projects">
+      <div class="section-heading"><span>05 / project desk</span><h2>little ideas can become real things.</h2><p>pick a starter idea, save it locally, or clear the desk and start fresh.</p></div>
+      <div class="project-layout">
+        <div class="project-grid" id="projectGrid"></div>
+        <aside class="notes-card"><div class="notes-head"><span>idea notebook</span><span id="saveState">saved locally</span></div><div class="notes-toolbar"><select id="fontSelector"><option value="Inter">Default</option><option value="Georgia">Georgia</option><option value="Courier New">Courier</option><option value="Arial">Arial</option><option value="Times New Roman">Times</option></select><button id="boldBtn" title="Bold (Ctrl+B)">B</button><button id="italicBtn" title="Italic (Ctrl+I)">I</button><button id="underlineBtn" title="Underline (Ctrl+U)">U</button></div><div id="notes" class="notes-editor" contenteditable="true" placeholder="write project ideas, lesson notes, or tiny goals here..."></div><div class="notes-actions"><button id="clearNotes">clear</button><span>autosaves</span></div></aside>
+      </div>
+    </section>
+
+    <section class="section" id="code-editor">
+      <div class="section-heading"><span>06 / code editor</span><h2>build with html, css & javascript.</h2><p>edit each language separately, name your file, and preview your project live.</p></div>
+      <div class="code-editor-layout">
+        <div class="editor-panel">
+          <div class="editor-head"><input type="text" id="fileName" class="file-name-input" value="index" placeholder="your-file-name"><span>.html</span><div class="tab-controls"><button class="tab-btn active" data-tab="html">HTML</button><button class="tab-btn" data-tab="css">CSS</button><button class="tab-btn" data-tab="js">JS</button></div></div>
+          <div class="editor-tabs">
+            <div class="editor-tab active" data-tab="html"><textarea id="htmlEditor" class="editor-textarea" placeholder="&lt;h1&gt;Hello World&lt;/h1&gt;"></textarea></div>
+            <div class="editor-tab" data-tab="css"><textarea id="cssEditor" class="editor-textarea" placeholder="body { font-family: sans-serif; }"></textarea></div>
+            <div class="editor-tab" data-tab="js"><textarea id="jsEditor" class="editor-textarea" placeholder="console.log('Hello from JS');"></textarea></div>
+          </div>
+          <div class="editor-actions"><select id="codeTemplates" title="Quick start templates"><option value="">+ templates</option><option value="html">HTML structure</option><option value="css-grid">CSS grid layout</option><option value="flexbox">Flexbox demo</option><option value="js-counter">JS counter</option><option value="form">HTML form</option><option value="car-game">🚗 car dodge game</option><option value="magic-spell">✨ magic spell generator</option></select><button id="runCodeBtn" title="Run Code" class="run-btn">▶ Run</button><button id="exportBtn" title="Download as HTML" class="export-btn">↓ Export</button><button id="clearEditor">clear</button></div>
+        </div>
+        <div class="code-preview-card">
+          <div class="preview-head">
+            <span>live preview</span>
+            <div class="preview-tools">
+              <button class="preview-tab-btn active" id="tabPreviewBtn" title="Preview">▢</button>
+              <button class="preview-tab-btn" id="tabConsoleBtn" title="Console output">▤</button>
+              <button class="device-btn active" data-device="desktop" title="Desktop">🖥</button>
+              <button class="device-btn" data-device="tablet" title="Tablet">📟</button>
+              <button class="device-btn" data-device="mobile" title="Mobile">📱</button>
+              <button class="device-btn" id="fullscreenPreviewBtn" title="Fullscreen">⛶</button>
+              <button id="clearPreview" title="Clear Preview">×</button>
+            </div>
+          </div>
+          <div class="preview-body" id="previewBody"><iframe id="codePreview" class="preview-iframe" sandbox="allow-scripts allow-same-origin allow-forms" title="Code preview output"></iframe></div>
+          <div class="preview-console" id="previewConsole"><div class="console-line dim">console output will appear here when you run your code.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="extras">
+      <div class="section-heading"><span>07 / extras</span><h2>a couple of bonus tools.</h2><p>peek at another website, or spin up a color palette for your next project.</p></div>
+      <div class="extras-layout">
+        <div class="browser-card tilt">
+          <div class="browser-head">
+            <div class="traffic"><i></i><i></i><i></i></div>
+            <div class="browser-bar"><input id="browserUrl" placeholder="type or paste a website address..." autocomplete="off"><button id="browserGoBtn">go →</button></div>
+          </div>
+          <div class="browser-quick">
+            <button data-url="https://developer.mozilla.org">MDN</button>
+            <button data-url="https://www.w3schools.com">W3Schools</button>
+            <button data-url="https://codepen.io">CodePen</button>
+            <button data-url="https://github.com">GitHub</button>
+            <button data-url="https://www.freecodecamp.org">freeCodeCamp</button>
+            <button data-url="https://caniuse.com">Can I Use</button>
+          </div>
+          <div class="browser-frame-wrap"><iframe id="browserFrame" title="mini browser" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe></div>
+          <div class="browser-note">note: some sites block being shown inside another page for security reasons — if a page stays blank, open it in a new tab instead.</div>
+        </div>
+        <div class="palette-card tilt">
+          <div class="browser-head"><span style="color:#c2b7f9;font:11px monospace;text-transform:uppercase">color palette generator</span></div>
+          <div class="palette-body">
+            <div class="palette-strip" id="paletteStrip"></div>
+            <div class="palette-actions"><button id="generatePaletteBtn">🎲 generate</button><button id="copyPaletteBtn">📋 copy all</button></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="teacher-corner">
+      <div><span>08 / teacher corner</span><h2>keep building<br><strong>one idea at a time.</strong></h2><p>coding is a place to experiment, learn, fix things, and make something completely new. this dashboard is designed to make that process easier.</p><div class="teacher-actions"><a class="button secondary" href="#home">back to top ↑</a><button class="button secondary" id="celebrateButton">celebrate progress ✦</button></div></div>
+      <img src="assets/chiikawa.png" alt="cute chiikawa coding illustration" onerror="this.classList.add('image-missing')">
+    </section>
+  </main>
+
+  <footer><span>made for sajida ♡</span><span>html • css • javascript • node.js</span><span id="footerStatus">server checking...</span></footer>
+  <img class="sticky-mascot" src="assets/chiisai.png" alt="chiisai mascot" onerror="this.classList.add('image-missing')">
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div id="keyboardShortcuts" class="shortcuts-panel"><div class="shortcuts-content"><button id="closeShortcuts" class="close-button">×</button><h3>keyboard shortcuts</h3><div class="shortcuts-grid"><div class="shortcut-item"><kbd>Ctrl/⌘ + S</kbd><span>Run code</span></div><div class="shortcut-item"><kbd>Ctrl/⌘ + K</kbd><span>Jump to terminal</span></div><div class="shortcut-item"><kbd>/</kbd><span>Search (home)</span></div><div class="shortcut-item"><kbd>Tab</kbd><span>Switch editor tabs</span></div><div class="shortcut-item"><kbd>?</kbd><span>Show shortcuts</span></div></div></div></div>
+  <div class="search-overlay" id="searchOverlay" aria-hidden="true"><div class="search-panel"><button id="closeSearch" class="close-button">×</button><span>classroom search</span><h2>find a section or lesson</h2><input id="globalSearch" placeholder="try typing javascript, projects, terminal..." autocomplete="off"><div id="searchResults"></div></div></div>
+  <div class="modal" id="lessonModal" aria-hidden="true"><div class="modal-panel"><button class="close-button" id="closeLesson">×</button><div id="lessonContent"></div></div></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
