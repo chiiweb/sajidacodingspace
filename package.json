@@ -1,0 +1,13 @@
+{
+  "name": "sajida-coding-space",
+  "version": "3.0.0",
+  "description": "a cute professional coding classroom for sajida",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
